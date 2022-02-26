@@ -2,39 +2,40 @@ import { Div } from "../atoms/Div";
 import SquareImg from "../atoms/Img";
 
 const Footer = () => {
+
     return (
         <>
-            <div className="footerDiv">
-                <Div width="100%" height="40px">
-                    <div className="footerTitle"><span className="title">CSE Seat</span></div>
+        <div className="footerDiv">
+            <Div width="100%" height="40px">
+                <div className="footerTitle"><span className="title">CSE Seat</span></div>
+            </Div>
+            <div className="footerSubDiv">
+                <Div width="200px" height="25px" jusContent="left" gap="10px">
+                    <span>CSE : </span>
+                    <a href="https://www.instagram.com/knu_cse/"><SquareImg src="/images/instagram.png" length="30px" /></a>
                 </Div>
-                <div className="footerSubDiv">
-                    <Div width="200px" height="25px" jusContent="left" gap="10px">
-                        <span>CSE : </span>
-                        <a href="https://www.instagram.com/knu_cse/"><SquareImg src="/images/instagram.png" length="30px" /></a>
-                    </Div>
-                    <Div width="200px" height="25px" jusContent="left">
-                        <span>Contact : pove2019@gmail.com</span>
-                    </Div>
-                </div>
-                <div className="footerSubDiv">
-                    <Div width="200px" height="25px" jusContent="left" gap="10px">
-                        <span>Developers : </span>
-                        <Div width="25px" height="25px" hidden>
-                            <a href="https://www.instagram.com/yoonlang__/"><SquareImg src="/images/instagram.png" length="30px" /></a>
-                        </Div>
-                        <Div width="25px" height="25px" hidden>
-                            <a href="https://www.instagram.com/cold__rainnn/"><SquareImg src="/images/instagram_color.png" length="30px" /></a>
-                        </Div>
-                    </Div>
-                    <Div width="200px" height="25px" jusContent="left" gap="10px">
-                        <span className="github">Github : </span>
-                        <a href="https://github.com/Yoonlang"><SquareImg src="/images/github.png" length="25px" invert /></a>
-                        <a href="https://github.com/chanwooDev"><SquareImg src="/images/github_color.png" length="25px" /></a>
-                    </Div>
-                </div>
+                <Div width="200px" height="25px" jusContent="left">
+                    <span>Contact : pove2019@gmail.com</span>
+                </Div>
             </div>
-            <style jsx>{`
+            <div className="footerSubDiv">
+                <Div width="200px" height="25px" jusContent="left" gap="10px">
+                    <span>Developers : </span>
+                    <Div width="25px" height="25px" hidden>
+                        <a href="https://www.instagram.com/yoonlang__/"><SquareImg src="/images/instagram.png" length="30px" /></a>
+                    </Div>
+                    <Div width="25px" height="25px" hidden>
+                        <a href="https://www.instagram.com/cold__rainnn/"><SquareImg src="/images/instagram_color.png" length="30px" /></a>
+                    </Div>
+                </Div>
+                <Div width="200px" height="25px" jusContent="left" gap="10px">
+                    <span className="github">Github : </span>
+                    <a href="https://github.com/Yoonlang"><SquareImg src="/images/github.png" length="25px" invert/></a>
+                    <a href="https://github.com/chanwooDev"><SquareImg src="/images/github_color.png" length="25px"/></a>
+                </Div>
+            </div>
+        </div>
+        <style jsx>{`
             span{
                 color: #fff;
                 font-size: 12px;

@@ -12,7 +12,6 @@ const createSalt = () =>
 const createHashedPassword = (plainPassword) =>
 new Promise(async (resolve, reject) => {
     const salt = await createSalt();
-
     crypto.pbkdf2(plainPassword, salt, 9999, 64, 'sha512', (err, key) => {
         if (err) reject(err);
         resolve({ password: key.toString('base64'), salt });
@@ -21,9 +20,10 @@ new Promise(async (resolve, reject) => {
 
 const makePasswordHashed = (sid, password) =>
     new Promise(async (resolve, reject) => {
-        const result = await userModel.findById(sid)
-        const salt = result.password_salt;
-        crypto.pbkdf2(password, salt, 9999, 64, 'sha512', (err, key) => {
+        const salt = await userModel
+            .findById(sid)
+            .then((result) => result.salt);
+        crypto.pbkdf2(plainPassword, salt, 9999, 64, 'sha512', (err, key) => {
             if (err) reject(err);
             resolve(key.toString('base64'));
         });
@@ -39,7 +39,8 @@ module.exports = {
             if (!userDTO.birth) throw Error('생일을 입력하세요.')
             if (!userDTO.major) throw Error('학번을 입력하세요.')
             let result = await userModel.findById(userDTO.sid).catch((err)=>{throw err;});
-            if(result) throw Error('이미 가입한 학번이 존재합니다.');
+            if(!result) throw Error('데이터 베이스 오류입니다. 관리자에게 문의하세요.');
+            if(result.length>0) throw Error('이미 가입한 학번이 존재합니다.');
             
             hashed = await createHashedPassword(userDTO.password);
             userDTO.password = hashed.password;
@@ -56,10 +57,10 @@ module.exports = {
         try{
             if (!userDTO.sid) throw Error('학번을 입력하세요.')
             if (!userDTO.password) throw Error('비밀번호를 입력하세요.')
-            let result= await userModel.findById(userDTO.sid);
-            if(!result) throw Error('가입한 학번이 존재하지 않습니다.');
-            let rightPassword = result.password;
-            if (rightPassword == await makePasswordHashed(userDTO.sid, userDTO.password)){
+            rightPassword = await userModel.findById(sid)
+            .then(result => result.password)
+            .catch((err)=>{throw err;});
+            if (rightPassword == makePasswordHashed(userDTO.password)){
                 return {result: true}
             }
             else throw Error('비밀번호가 틀렸습니다.');

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 
-const HeadTitle = ({ title }) => {
+const HeadTitle = ({title}) => {
     return (
         <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />

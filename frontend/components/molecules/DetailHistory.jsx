@@ -1,33 +1,33 @@
 
-const DetailHistory = ({ isOpenModal = false }) => {
+const DetailHistory = ({isOpenModal = false}) => {
 
     return (
-        <>
-            <div className="detail">
-                <div>
-                    신청 날짜 및 시간 : 22.01.19   18:02<br />
-                    취소 날짜 및 시간 : (취소 했을 때만)<br /><br />
-                    1부 입실 :   22.01.19   10:02<br />
-                    1부 퇴실 :   22.01.19   18:00<br />
-                    2부 입실 :   22.01.19   18:00<br />
-                    2부 퇴실 :   22.01.19   21:09<br />
-                </div>
-                <div>
-                    <span>
-                        원하는 강의실 : 101호, 104호, 108호<br />
-                        원하는 자리 : &nbsp;47
-                    </span>
-                    입력한 친구 :<br />
-                    <div>
-                        2018115201<br />
-                        2018115202<br />
-                        2018115203<br />
-                    </div>
-                </div>
+    <>
+    <div className="detail">
+        <div>
+        신청 날짜 및 시간 : 22.01.19   18:02<br/>
+        취소 날짜 및 시간 : (취소 했을 때만)<br/><br/>
+        1부 입실 :   22.01.19   10:02<br/>
+        1부 퇴실 :   22.01.19   18:00<br/>
+        2부 입실 :   22.01.19   18:00<br/>
+        2부 퇴실 :   22.01.19   21:09<br/>
+        </div>
+        <div>
+            <span>
+                원하는 강의실 : 101호, 104호, 108호<br/>
+                원하는 자리 : &nbsp;47
+            </span>
+                입력한 친구 :<br/>
+            <div>
+                2018115201<br/>
+                2018115202<br/>
+                2018115203<br/>
             </div>
-            <style jsx>{`
+        </div>
+    </div>
+    <style jsx>{`
         .detail{
-            display: ${(isOpenModal ? 'flex' : 'none')};
+            display: ${(isOpenModal ? 'flex':'none')};
             height: 100%;
             flex-wrap: wrap;
             border-width: 0 0 1px 0;
@@ -63,7 +63,7 @@ const DetailHistory = ({ isOpenModal = false }) => {
             }
         }
     `}</style>
-        </>);
+    </>);
 }
 
 export default DetailHistory;

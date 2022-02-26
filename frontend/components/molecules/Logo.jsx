@@ -1,9 +1,9 @@
-import { MyLink } from "../atoms/Div";
+import {MyLink} from "../atoms/Div";
 
 const Logo = () => {
     return (
         <MyLink href="/" passHref={true} width="180px" height="50%">
-            <img className="logoImg" src="/images/cse.png" />
+            <img className="logoImg" src="/images/cse.png"/>
             <span>CSE Seat</span>
             <style jsx>{`
                 span{

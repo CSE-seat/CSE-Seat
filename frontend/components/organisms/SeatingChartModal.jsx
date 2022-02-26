@@ -2,16 +2,23 @@ import { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import RoomSeats from "../molecules/RoomSeats";
 import { seatingChartModalAtom } from "../others/state";
-import { Fragment } from "react";
 
-const SeatingChartModal = ({ data }) => {
+const SeatingChartModal = () => {
+    // 한 room의 width를 250~400. width 조절 처리 끝
+    // RoomSeats에 length 달 수 있게 설정해놨으니까
+    // 내일 seat 크기 조절해서 modal창에 넣도록.
+
+
+    // 스크롤바도 안 보이게 해야함
+
+
     const [isOpenModal, setIsOpenModal] = useRecoilState(seatingChartModalAtom);
     const [targetRoom, setTargetRoom] = useState(0);
     const modalOutside = useRef();
     const cancelBtn = useRef();
 
     const closeModal = (event) => {
-        if (event.target === modalOutside.current || event.target === cancelBtn.current) {
+        if(event.target === modalOutside.current || event.target === cancelBtn.current){
             setIsOpenModal(false);
         }
     }
@@ -22,37 +29,36 @@ const SeatingChartModal = ({ data }) => {
 
     return (
         <>
-            <div className="background" onClick={closeModal} ref={modalOutside}>
-                <div className="modal">
-                    <div className="header">
-                        <span onClick={() => changeTargetRoom(0)}>101호</span>
-                        <div></div>
-                        <span onClick={() => changeTargetRoom(1)}>104호</span>
-                        <div></div>
-                        <span onClick={() => changeTargetRoom(2)}>108호</span>
-                    </div>
-
-                    <div className="rooms">
-                        {
-                            data.data.rooms.map((prop, index) => {
-                                const className = "room" + index;
-                                const { num, m, seats } = prop;
-                                return <Fragment key={prop + index}>
-                                    <div className={className}>
-                                        <RoomSeats length="40px" roomNumber={num} m={m} seats={seats} basic />
-                                    </div>
-                                    <div className="bar"></div>
-                                </Fragment>
-                            })
-                        }
-                    </div>
-                    <img src="/images/cancel.png"
-                        className="cancel"
-                        onClick={closeModal}
-                        ref={cancelBtn} />
+        <div className="background" onClick={closeModal} ref={modalOutside}>
+            <div className="modal">
+                <div className="header">
+                    <span onClick={() => changeTargetRoom(0)}>101호</span>
+                    <div></div>
+                    <span onClick={() => changeTargetRoom(1)}>104호</span>
+                    <div></div>
+                    <span onClick={() => changeTargetRoom(2)}>108호</span>
                 </div>
+                
+                <div className="rooms">
+                    <div className="room0">
+                        <RoomSeats length="40px" basic roomNumber={0}/>
+                    </div>
+                    <div className="bar"></div>
+                    <div className="room1">
+                        <RoomSeats length="40px" basic roomNumber={1}/>
+                    </div>
+                    <div className="bar"></div>
+                    <div className="room2">
+                        <RoomSeats length="40px" basic roomNumber={2}/>
+                    </div>
+                </div>
+                <img src="/images/cancel.png"
+                    className="cancel"
+                    onClick={closeModal}
+                    ref={cancelBtn}/>
             </div>
-            <style jsx>{`
+        </div>
+        <style jsx>{`
             .background{
                 display: ${(isOpenModal ? "flex" : "none")};
                 justify-content: center;
@@ -68,7 +74,7 @@ const SeatingChartModal = ({ data }) => {
             .modal{
                 display: flex;
                 position: relative;
-                flex-direction: column;
+                align-items: center;
                 top:0;
                 left:0;
                 height: 70%;
@@ -107,6 +113,7 @@ const SeatingChartModal = ({ data }) => {
             .rooms{
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
                 height: 100%;
             }
             .rooms .bar{
@@ -127,7 +134,6 @@ const SeatingChartModal = ({ data }) => {
                     width: 70%;
                     min-width: 900px;
                     max-width: 1300px;
-                    padding-top: 20px;
                 }
                 .header{
                     display: none;
@@ -136,7 +142,7 @@ const SeatingChartModal = ({ data }) => {
             @media(max-width: 1023px){
                 .modal{
                     width: 400px;
-                    padding-top: 40px;
+                    padding-top: 25px;
                 }
                 .header{
                     display: flex;

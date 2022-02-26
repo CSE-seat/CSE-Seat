@@ -1,136 +1,96 @@
-const seatModel = require("$/models/seat");
-const logModel = require("$/models/log");
-const dateService = require("../services/date");
+const seatChartModel = require('../models/seat_chart')
+const reservationModel = require('../models/reservation')
+const dateService = require('./date')
+const initSeatsState = (rNum) => {
+    let seats = []
+    let roomArray = seatChartModel.getRoomArray(rNum);
+    let n = roomArray.length
+    let m = roomArray[0].length
+    for (let i = 0; i<n; i++){
+        seats.push([]);
+        for(let j = 0; j<m; j++){
+            let seat = {}
+            if (roomArray[i][j] != -1){
+                seat.num = roomArray[i][j];
+                seat.todayState = [0,0];
+                seat.tomorrowState = [0,0];
+            }
+            seats[i].push(seat)
+        }
+    }
+    return seats;      
+}
 
-const initProperty = (seatDTO) => {
-  if (seatDTO.isToday == "true") seatDTO.isToday = true;
-  if (seatDTO.isToday == "false") seatDTO.isToday = false;
-  if (seatDTO.part1 == "true") seatDTO.part1 = true;
-  if (seatDTO.part1 == "false") seatDTO.part1 = false;
-  if (seatDTO.part2 == "true") seatDTO.part2 = true;
-  if (seatDTO.part2 == "false") seatDTO.part2 = false;
-  seatDTO.building_id *= 1;
-  seatDTO.seat_room = seatDTO.seat_room[0] * 1; // 임시
-  seatDTO.seat_num *= 1;
-  seatDTO.date = seatDTO.isToday
-    ? dateService.getTodayDate()
-    : dateService.getTomorrowDate();
-  seatDTO.apply_time = dateService.getNowTime();
-};
+const getSeats = async (sid,rNum) => {
 
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-};
+    try{
+        let seats = initSeatsState(rNum);
+        let seatsMap = seatChartModel.getRoomMap(rNum);
+        let seatDTO = {
+            building_id : 414,
+            seat_room : rNum,
+            date : dateService.getTodayDate()
+        }
+        let seatList = await reservationModel.findList(seatDTO);
+        for (let i = 0; i<seatList.length; i++){
+            let location = seatsMap.get(seatList[i].seat_num);
+            let y = location[0];
+            let x = location[1];
+            if(!seats[y][x].todayState) seats[y][x].todayState = [0,0];
+
+            if(seatList[i].reservation_part == 1){
+                if(seatList[i].user_sid == sid) seats[y][x].todayState[0] = 2;
+                else seats[y][x].todayState[0] = 1;
+            }else{
+                if(seatList[i].user_sid == sid) seats[y][x].tomorrowState[1] = 2;
+                else seats[y][x].todayState[1] = 1;
+            }// 동료 체크 구현해야함
+        }
+        return seats
+    }catch(e){
+        return e;
+    }
+}
+
+const getData = async (sid) => {
+    const data = {
+        buildingNum : 414,
+        buildingName : 'IT4호관',
+        numRooms : 3,  //101, 104, 108
+        rooms : []
+    }
+    let roomArr = seatChartModel.getRoomArray(101);
+    data.rooms.push({
+        num : 101,
+        n : roomArr.length,
+        m : roomArr[0].length,
+        seats : await getSeats(sid, 101)
+    });
+    if (data.rooms[0].seats instanceof Error) throw data.rooms[0].seats;
+    roomArr = seatChartModel.getRoomArray(104);
+    data.rooms.push({
+        num : 104,
+        n : roomArr.length,
+        m : roomArr[0].length,
+        seats : await getSeats(sid, 104)
+    });
+    if (data.rooms[1].seats instanceof Error) throw data.rooms[1].seats;
+
+    roomArr = seatChartModel.getRoomArray(108);
+    data.rooms.push({
+        num : 108,
+        n : roomArr.length,
+        m : roomArr[0].length,
+        seats : await getSeats(sid, 108)
+    });
+    if (data.rooms[2].seats instanceof Error) throw data.rooms[2].seats;
+
+    return data;
+}
+
+
+
 
 module.exports = {
-  reserve: async (seatDTO) => {
-    //실시간 방식
-    try {
-      //랜덤 생성 임시
-      if (!seatDTO.seat_num) {
-        if (seatDTO.seat_room[0] == "101") {
-          seatDTO.seat_num = getRandomInt(2, 15);
-        } else if (seatDTO.seat_room[0] == "104") {
-          seatDTO.seat_num = getRandomInt(16, 47);
-        } else if (seatDTO.seat_room[0] == "108") {
-          seatDTO.seat_num = getRandomInt(48, 71);
-        }
-      }
-
-      initProperty(seatDTO);
-      if (seatDTO.part1) {
-        seatDTO.part = 1;
-        let result = await seatModel.exist(seatDTO);
-        if (result) throw Error("이미 예약된 좌석입니다.");
-      }
-      if (seatDTO.part2) {
-        seatDTO.part = 2;
-        let result = await seatModel.exist(seatDTO);
-        if (result) throw Error("이미 예약된 좌석입니다.");
-      }
-
-      let insertId = await seatModel.apply(seatDTO);
-
-      if (seatDTO.part1) {
-        seatDTO.part = 1;
-        seatDTO.apply_id = insertId;
-        await seatModel.reserve(seatDTO);
-      }
-      if (seatDTO.part2) {
-        seatDTO.part = 2;
-        seatDTO.apply_id = insertId;
-        await seatModel.reserve(seatDTO); //여기 오류시 롤백
-      }
-
-      await logModel.reservation(seatDTO);
-      return true;
-    } catch (e) {
-      return e;
-    }
-  },
-  cancelReservation: async (seatDTO) => {
-    try {
-      seatDTO.building_id *= 1;
-      seatDTO.seat_room *= 1;
-      seatDTO.seat_num *= 1;
-      seatDTO.date = seatDTO.isToday
-        ? dateService.getTodayDate()
-        : dateService.getTomorrowDate();
-      let part1ApplyId;
-      let part2ApplyId;
-
-      if (seatDTO.part1) {
-        seatDTO.part = 1;
-        let result = await seatModel.exist(seatDTO);
-        if (!result) throw new Error("예약 좌석이 아닙니다");
-        if (result.user_sid != seatDTO.user_sid)
-          throw new Error("예약자가 본인이 아닙니다");
-        part1ApplyId = result.apply_id;
-      }
-      if (seatDTO.part2) {
-        seatDTO.part = 2;
-        let result = await seatModel.exist(seatDTO);
-        if (!result) throw new Error("예약 좌석이 아닙니다");
-        if (result.user_sid != seatDTO.user_sid)
-          throw new Error("예약자가 본인이 아닙니다");
-        part2ApplyId = result.apply_id;
-      }
-      if (seatDTO.part1) {
-        seatDTO.part = 1;
-        await seatModel.deleteReservation(seatDTO);
-      }
-      if (seatDTO.part2) {
-        seatDTO.part = 2;
-        await seatModel.deleteReservation(seatDTO);
-      }
-      if(seatDTO.part1 && seatDTO.part2){
-        if(part1ApplyId === part2ApplyId){
-          seatDTO.apply_id = part1ApplyId;
-          await logModel.updateCancel(seatDTO);
-        }
-        else{
-          seatDTO.apply_id = part1ApplyId;
-          await logModel.updateCancel(seatDTO);
-          seatDTO.apply_id = part2ApplyId;
-          await logModel.updateCancel(seatDTO);
-        }
-      }
-      else if(seatDTO.part1 || seatDTO.part2){
-        if (part1ApplyId) seatDTO.apply_id = part1ApplyId;
-        else if (part2ApplyId) seatDTO.apply_id = part2ApplyId;
-        let result = await logModel.findOne(seatDTO);
-        if (result.part1 && result.part2){
-          await logModel.updatePart(seatDTO);
-        }
-        else await logModel.updateCancel(seatDTO); 
-      }
-
-      return true;
-    } catch (e) {
-      console.log("seat services error", e);
-      return e;
-    }
-  },
-};
+    getData : getData,
+}

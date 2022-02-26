@@ -19,7 +19,7 @@ const History = () => {
 
     return (
         <PageDiv dis="flex" ali="center" dir="column">
-            <HeadTitle title="history" />
+            <HeadTitle title="history"/>
             <HistoryDiv>
                 <div className="title">입퇴실 / 신청 기록 열람</div>
                 <div className="seatHistorys">

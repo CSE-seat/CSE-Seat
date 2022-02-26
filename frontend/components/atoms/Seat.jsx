@@ -1,17 +1,17 @@
-import { useRef, useEffect } from 'react';
+import {useRef, useEffect} from 'react';
 
 const seatColor = ['#ffffff', '#969696', '#0F5BCC', '#007435', '#5C9DFF', '#D60505'];
 
-const Seat = ({ length = "50px", left = 0, right = 0, dist = 0, width = 26, isColor = false, hidden = false }) => {
+const Seat = ({length = "50px", left = 0, right = 0, dist = 0, width = 26, isColor = false}) => {
     const canvasRef = useRef();
     const leng = length.slice(0, length.match("px").index);
 
     useEffect(() => {
-        if (!isColor) {
+        if(!isColor){
             left = seatColor[left];
             right = seatColor[right];
         }
-
+        
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         canvas.width = 500;
@@ -49,7 +49,7 @@ const Seat = ({ length = "50px", left = 0, right = 0, dist = 0, width = 26, isCo
         ctx.scale(0.5, 0.5);
 
         ctx.lineWidth = width;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);        
         ctx.beginPath();
         ctx.arc(hX - dis, 140, 79, Math.PI * 0.5, Math.PI * 1.5);
         ctx.lineTo(hX - dis, 138 + 80 + hW);
@@ -72,7 +72,7 @@ const Seat = ({ length = "50px", left = 0, right = 0, dist = 0, width = 26, isCo
         ctx.lineTo(hX + dis, 450);
         dist === 0 ? ctx.moveTo(hX + dis, 300) : ctx.lineTo(hX + dis, 300 - hW);
         ctx.stroke();
-
+        
         fillLeft(left);
         fillRight(right);
 
@@ -80,10 +80,10 @@ const Seat = ({ length = "50px", left = 0, right = 0, dist = 0, width = 26, isCo
 
     return (
         <>
-            <div className="canvasDiv">
-                <canvas ref={canvasRef} width="1920" height="1080"></canvas>
-            </div>
-            <style jsx>{`
+        <div className="canvasDiv">
+            <canvas ref={canvasRef} width="1920" height="1080"></canvas>
+        </div>
+        <style jsx>{`
                 .canvasDiv{
                     display: flex;
                     width: ${(leng)}px;
@@ -91,14 +91,13 @@ const Seat = ({ length = "50px", left = 0, right = 0, dist = 0, width = 26, isCo
                     overflow: hidden;
                 }
                 canvas{
-                    ${(hidden ? `display: none;` : ``)}
                     width:${(leng * 2)}px;
                     height:${(leng * 2)}px;
                 }
             `}</style>
         </>
-
+        
     );
 }
 
-export { Seat, seatColor };
+export {Seat, seatColor};

@@ -4,17 +4,27 @@ import { todayAtom } from "../others/state";
 const TodayButton = () => {
     const [isToday, setIsToday] = useRecoilState(todayAtom);
 
-    const changeDay = () => setIsToday(!isToday);
+    const changeToToday = () => {
+        if(!isToday){
+            setIsToday(!isToday);
+        }
+    }
+
+    const changeToTomarrow = () => {
+        if(isToday){
+            setIsToday(!isToday);
+        }
+    }
 
     return (
         <>
             <div className="buttonDiv">
-                <div className="left" onClick={changeDay}>
+                <div className="left" onClick={changeToToday}>
                     <div className="roundA"></div>
                     <div className="a"></div>
                     <span className="aa">오늘 자리</span>
                 </div>
-                <div className="right" onClick={changeDay}>
+                <div className="right" onClick={changeToTomarrow}>
                     <div className="b"></div>
                     <div className="roundB"></div>
                     <span className="bb">내일 자리</span>

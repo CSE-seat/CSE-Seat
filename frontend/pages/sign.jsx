@@ -5,7 +5,7 @@ import { PageDiv } from "../components/atoms/Div";
 const Sign = () => {
     return (
         <PageDiv dis="flex" jus="center" ali="center">
-            <HeadTitle title="login" />
+            <HeadTitle title="login"/>
             <SignForm />
         </PageDiv>
     )

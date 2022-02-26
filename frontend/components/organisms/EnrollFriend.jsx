@@ -4,11 +4,11 @@ import { enrollFriendAtom } from "../others/state";
 
 const EnrollFriend = () => {
     const [enrollFriend, setEnrollFriend] = useRecoilState(enrollFriendAtom);
-    const { isOn } = enrollFriend;
+    const {isOn} = enrollFriend;
 
     const handleOnOff = (isOnReq) => {
-        if (isOn !== isOnReq) {
-            const tempEnrollFriend = { ...enrollFriend };
+        if(isOn !== isOnReq){
+            const tempEnrollFriend = {...enrollFriend};
             tempEnrollFriend.isOn = isOnReq;
             setEnrollFriend(tempEnrollFriend);
         }
@@ -17,17 +17,17 @@ const EnrollFriend = () => {
     }
 
     return (<>
-        <div className="enroll">
-            <div className="enrollHeader">
-                <span>특정 사람만 함께 신청 허용</span>
-                <div>
-                    <div className="on" onClick={() => handleOnOff(true)}>on</div>
-                    <div className="off" onClick={() => handleOnOff(false)}>off</div>
-                </div>
+    <div className="enroll">
+        <div className="enrollHeader">
+            <span>특정 사람만 함께 신청 허용</span>
+            <div>
+                <div className="on" onClick={() => handleOnOff(true)}>on</div>
+                <div className="off" onClick={() => handleOnOff(false)}>off</div>
             </div>
-            <EnrollBox />
         </div>
-        <style jsx>{`
+        <EnrollBox />
+    </div>
+    <style jsx>{`
         .enroll{
             display: flex;
             flex-direction: column;

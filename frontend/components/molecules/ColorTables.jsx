@@ -1,5 +1,5 @@
 
-const ColorTable = ({ children, color, length = "20px" }) => {
+const ColorTable = ({children, color}) => {
     return (
         <>
             <div className="colorTable">
@@ -13,8 +13,8 @@ const ColorTable = ({ children, color, length = "20px" }) => {
                     height: 25%;
                 }
                 .colorTable div{
-                    width: ${length};
-                    height: ${length};
+                    width: 20px;
+                    height: 20px;
                     background: ${(color)};
                     border: solid;
                     border-width: 1px;
@@ -33,7 +33,7 @@ const ColorTables = () => {
                 <ColorTable color="#969696">예약 불가능</ColorTable>
                 <ColorTable color="#0F5BCC">본인 자리</ColorTable>
                 <ColorTable color="#007435">친구 자리</ColorTable>
-            </div>
+            </div>        
             <style jsx>{`
                 .colorTables{
                     display:flex;
@@ -43,8 +43,8 @@ const ColorTables = () => {
                 }
             `}</style>
         </>
-    );
+    );    
 
 }
 
-export { ColorTables, ColorTable };
+export default ColorTables;

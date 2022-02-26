@@ -12,7 +12,7 @@ module.exports = ({app}) => {
         secret: session_secret,
         resave: false,
         saveUninitialized: true,
-        store: sessionStore,
+        store: sessionStore
     }))
     app.use(passport.initialize())
     app.use(passport.session())

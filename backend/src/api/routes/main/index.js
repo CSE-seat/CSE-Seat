@@ -1,9 +1,9 @@
 const {Router} = require('express');
-const stateService = require('$/services/state');
+const seatService = require('$/services/seat');
 const router = Router();
 
 router.get('/',async (req, res, next) => {
-    data = await stateService.seatData(req.user);
+    data = await seatService.getData(req.user);
     if(data instanceof Error) return next(data);
     res.status(200).json({result : true , data : data});
 });

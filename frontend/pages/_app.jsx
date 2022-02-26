@@ -1,13 +1,11 @@
-import { RecoilRoot } from 'recoil';
+import {RecoilRoot} from 'recoil';
 import Header from '../components/organisms/Header';
 import Footer from '../components/organisms/Footer';
-import Checker from '../components/others/Checker';
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({Component, pageProps}) => {
     return (
         <RecoilRoot>
             <Header />
-            <Checker />
             <Component {...pageProps} />
             <Footer />
             <style jsx global>{`

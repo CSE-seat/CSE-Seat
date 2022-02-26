@@ -1,7 +1,7 @@
 import { PageDiv } from "../components/atoms/Div";
 
 const Error = () => {
-    return (
+    return(
         <PageDiv>
             <div>
                 잘못된 페이지입니다.

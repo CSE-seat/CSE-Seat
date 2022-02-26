@@ -12,7 +12,7 @@ const InfoDiv = styled(BorderDiv)`
 const Info = () => {
     return (
         <PageDiv dis="flex" jus="center">
-            <HeadTitle title="info" />
+            <HeadTitle title="info"/>
             <InfoDiv>
                 <BasicInfo />
                 <div className="bar"></div>

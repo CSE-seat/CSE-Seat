@@ -9,23 +9,23 @@ const SeatHistory = () => {
     }
 
     return (
-        <>
-            <div className="history">
-                <span>22년 1월 19일</span>
-                <div>
-                    <span>1부 : 101호 47번 좌석</span>
-                    <button>입실</button>
-                    <button>퇴실</button>
-                </div>
-                <div>
-                    <span>2부 : 101호 47번 좌석</span>
-                    <button>입실</button>
-                    <button>퇴실</button>
-                </div>
-                <button onClick={handleModal}>자세히 보기</button>
+    <>
+        <div className="history">
+            <span>22년 1월 19일</span>
+            <div>
+                <span>1부 : 101호 47번 좌석</span>
+                <button>입실</button>
+                <button>퇴실</button>
             </div>
-            <DetailHistory isOpenModal={isOpenModal} />
-            <style jsx>{`
+            <div>
+                <span>2부 : 101호 47번 좌석</span>
+                <button>입실</button>
+                <button>퇴실</button>
+            </div>
+            <button onClick={handleModal}>자세히 보기</button>
+        </div>
+        <DetailHistory isOpenModal={isOpenModal}/>
+        <style jsx>{`
             .history{
                 display: grid;
                 grid-template-rows: 1fr 1fr 1fr;
@@ -92,7 +92,7 @@ const SeatHistory = () => {
                 }
             }
         `}</style>
-        </>);
+    </>);
 }
 
 export default SeatHistory;

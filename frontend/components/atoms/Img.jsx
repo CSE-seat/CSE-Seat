@@ -17,10 +17,10 @@ const StyledImg = styled.img`
 `;
 
 const SquareImg = ({
-    length = "40px",
-    invert = false,
-    objectFit = "fill",
-    radius = "0",
+    length="40px",
+    invert=false,
+    objectFit="fill",
+    radius="0",
     src
 }) => {
 

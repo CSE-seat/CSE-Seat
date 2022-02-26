@@ -4,7 +4,7 @@ module.exports = {
     if (req.isAuthenticated()) {
       next();
     } else {
-      res.status(401).json({result:false, message:'로그인이 필요합니다.'});
+      res.status(401).json({result:false});
     }
   },
   isNotLoggedIn : (req, res, next) => {
@@ -14,5 +14,5 @@ module.exports = {
       console.log('logout plz ^ g ^');
       res.status(401);
     }
-  } 
+  }
 }
